@@ -1,5 +1,6 @@
 from .songs import *
 from ._utils import *
+from ytmusicapi.ytmtypes.playlist import Playlist
 
 
 def parse_mixed_content(rows):
@@ -113,7 +114,7 @@ def parse_video(result):
     }
 
 
-def parse_playlist(data):
+def parse_playlist(data) -> Playlist:
     playlist = {
         'title': nav(data, TITLE_TEXT),
         'playlistId': nav(data, TITLE + NAVIGATION_BROWSE_ID)[2:],
@@ -126,7 +127,7 @@ def parse_playlist(data):
             playlist['count'] = nav(data, SUBTITLE2).split(' ')[0]
             playlist['author'] = parse_song_artists_runs(subtitle['runs'][:1])
 
-    return playlist
+    return Playlist(**playlist)
 
 
 def parse_related_artist(data):
